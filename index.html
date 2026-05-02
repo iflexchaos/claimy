@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claimly • Get Paid From Lawsuits (Free, Ad-Supported)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+    .ad-box { background: linear-gradient(135deg, #f3f4f6, #e5e7eb); }
+    .urgency { animation: pulse 2s infinite; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Navbar -->
+  <nav class="bg-white border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">C</div>
+        <div>
+          <span class="text-3xl font-bold tracking-tight text-gray-900">Claimly</span>
+        </div>
+      </div>
+      <div class="flex gap-8 text-gray-600 font-medium">
+        <a href="#" onclick="switchTab(0); return false" class="hover:text-emerald-600 nav-link active">Discover</a>
+        <a href="#" onclick="switchTab(1); return false" class="hover:text-emerald-600 nav-link">My Claims</a>
+        <a href="#" class="hover:text-emerald-600">How It Works</a>
+        <a href="#" class="hover:text-emerald-600">Blog</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="showAdDemo()" 
+                class="px-5 py-2 text-sm font-semibold bg-white border-2 border-emerald-600 text-emerald-600 rounded-2xl hover:bg-emerald-50">
+          See How We Make Money
+        </button>
+        <button class="px-6 py-2.5 bg-emerald-600 text-white rounded-2xl font-semibold hover:bg-emerald-700">
+          Sign Up Free
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="bg-gradient-to-r from-emerald-700 to-teal-700 text-white py-20">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h1 class="text-6xl font-bold mb-6">Never miss money you're owed</h1>
+      <p class="text-2xl mb-10 text-emerald-100">We find active lawsuits and settlements. You claim your compensation.<br>
+      <span class="text-emerald-200 font-medium">100% Free. We run on ads — not subscriptions.</span></p>
+      
+      <div class="max-w-2xl mx-auto">
+        <div class="relative">
+          <input id="searchInput" 
+                 onkeyup="if(event.key === 'Enter') filterClaims()"
+                 type="text" 
+                 placeholder="Search by company or product (e.g. iPhone, Wells Fargo, Tesla...)"
+                 class="w-full px-6 py-5 rounded-3xl text-lg focus:outline-none focus:ring-4 focus:ring-emerald-400 text-gray-900">
+          <button onclick="filterClaims()" 
+                  class="absolute right-3 top-1/2 -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-3xl font-semibold">
+            Search
+          </button>
+        </div>
+      </div>
+      <p class="text-xs text-emerald-200 mt-4">Over $487 Million paid out to users last year</p>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+    <!-- Sidebar Ads + Filters -->
+    <div class="w-72 space-y-8">
+      <!-- Ad 1 -->
+      <div class="ad-box border border-gray-300 rounded-3xl p-5 text-center">
+        <div class="text-[10px] uppercase tracking-widest text-gray-500 mb-2">Advertisement</div>
+        <p class="font-semibold text-gray-800">Protect your credit after data breaches</p>
+        <button onclick="alert('This would link to a sponsored credit monitoring service (revenue for Claimly)')"
+                class="mt-4 text-sm bg-white px-6 py-2.5 rounded-2xl border border-gray-400 hover:border-gray-600">
+          Get Free Scan →
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div>
+        <h3 class="font-semibold mb-4 text-gray-700">Categories</h3>
+        <div class="flex flex-wrap gap-2" id="categoryFilters">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <div class="bg-white border rounded-3xl p-6">
+        <h3 class="font-semibold mb-4">Top Payouts This Month</h3>
+        <div class="space-y-4 text-sm">
+          <div class="flex justify-between"><span class="text-emerald-600">• Equifax Follow-up</span><span class="font-medium">$850</span></div>
+          <div class="flex justify-between"><span class="text-emerald-600">• Boeing Whistleblower</span><span class="font-medium">$1,200</span></div>
+          <div class="flex justify-between"><span class="text-emerald-600">• Tesla Autopilot</span><span class="font-medium">$650</span></div>
+        </div>
+      </div>
+
+      <!-- Ad 2 -->
+      <div class="ad-box border border-gray-300 rounded-3xl p-6">
+        <div class="text-[10px] uppercase tracking-widest text-amber-600 mb-2">Sponsored</div>
+        <p class="font-bold text-lg leading-tight">Law firms: Get qualified leads from consumers already looking for claims.</p>
+        <button onclick="alert('This would be a lead-gen form for law firms — high-value ad revenue')"
+                class="mt-6 w-full bg-amber-600 text-white py-3 rounded-2xl text-sm font-semibold">Become a Sponsor</button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1">
+      <div class="flex justify-between items-center mb-6">
+        <h2 id="tabTitle" class="text-3xl font-bold text-gray-900">Active Settlements You May Qualify For</h2>
+        <div class="text-sm text-gray-500">8 settlements • Updated 2 hours ago</div>
+      </div>
+
+      <!-- Claims Grid -->
+      <div id="claimsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="bg-white py-16 border-t border-b">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-center text-4xl font-bold mb-12">How Claimly Works (It's Free)</h2>
+      <div class="grid grid-cols-4 gap-8">
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-4">1</div>
+          <h4 class="font-semibold mb-2">We Find Lawsuits</h4>
+          <p class="text-gray-600 text-sm">We track class actions, settlements, and consumer lawsuits across the US.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-4">2</div>
+          <h4 class="font-semibold mb-2">You Get Matched</h4>
+          <p class="text-gray-600 text-sm">Answer 3-4 quick questions to see if you qualify.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-4">3</div>
+          <h4 class="font-semibold mb-2">We Show You How</h4>
+          <p class="text-gray-600 text-sm">Direct links to official claim forms or attorneys (no cost to you).</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-4">💰</div>
+          <h4 class="font-semibold mb-2">You Get Paid</h4>
+          <p class="text-gray-600 text-sm">Checks, direct deposit, or gift cards. We make money from ads only.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer / Disclaimer -->
+  <footer class="bg-gray-900 text-gray-400 py-16">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm">
+      <p class="mb-6 max-w-3xl mx-auto">
+        <strong class="text-white">Important Legal Disclaimer:</strong> Claimly is not a law firm and does not provide legal advice. 
+        We are an ad-supported information platform. All claim links direct you to official settlement administrators or licensed attorneys. 
+        Results are not guaranteed. Past performance does not indicate future results. Always verify eligibility on the official site.
+      </p>
+      <p>© 2026 Claimly • Made for demonstration purposes • Revenue model: Display ads, sponsored listings, and affiliate partnerships with legal marketing firms.</p>
+    </div>
+  </footer>
+
+  <!-- Claim Modal -->
+  <div id="claimModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+    <div class="bg-white rounded-3xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-auto">
+      <div class="p-8">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <span id="modalCategory" class="px-4 py-1 text-xs font-bold rounded-full bg-teal-100 text-teal-700"></span>
+            <h2 id="modalTitle" class="text-3xl font-bold mt-3"></h2>
+            <p id="modalCompany" class="text-emerald-600 font-semibold"></p>
+          </div>
+          <button onclick="closeModal()" class="text-4xl leading-none text-gray-300 hover:text-gray-500">×</button>
+        </div>
+
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-8">
+          <div class="flex justify-between text-sm">
+            <div><span class="text-gray-500">Est. Payout:</span> <span id="modalPayout" class="font-bold text-2xl text-emerald-700"></span></div>
+            <div><span class="text-gray-500">Deadline:</span> <span id="modalDeadline" class="font-bold text-red-600 urgency"></span></div>
+          </div>
+        </div>
+
+        <h3 class="font-semibold mb-4">Do you qualify? (Quick check)</h3>
+        <div id="eligibilityQuestions" class="space-y-6">
+          <!-- populated by JS -->
+        </div>
+
+        <div id="resultSection" class="hidden mt-8 p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
+          <h3 class="text-2xl font-bold text-emerald-700 mb-2">✅ You appear to be eligible!</h3>
+          <p class="text-gray-600 mb-6">Average payout in this settlement has been $387. Here's what to do next:</p>
+          <a href="#" onclick="submitClaim(); return false" 
+             class="block text-center bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-semibold text-lg">
+            File Your Claim Now (Official Link)
+          </a>
+          <div class="mt-6 text-xs text-center text-gray-500">This link goes to the court-approved claims administrator.</div>
+        </div>
+
+        <div class="flex gap-4 mt-8">
+          <button onclick="closeModal()" 
+                  class="flex-1 py-4 border border-gray-300 rounded-2xl font-semibold">Close</button>
+          <button onclick="checkEligibility()" 
+                  id="checkBtn"
+                  class="flex-1 py-4 bg-emerald-600 text-white rounded-2xl font-semibold hover:bg-emerald-700">Check My Eligibility</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mock Data
+    let claims = [
+      {
+        id: 1,
+        title: "Meta Platforms Privacy Lawsuit",
+        company: "Meta (Facebook/Instagram)",
+        category: "Privacy",
+        payout: "$120 – $850",
+        deadline: "31 days left",
+        urgency: "high",
+        desc: "Users whose private data was allegedly shared without consent between 2018-2025."
+      },
+      {
+        id: 2,
+        title: "Tesla Autopilot Misrepresentation",
+        company: "Tesla",
+        category: "Auto",
+        payout: "$450 – $2,100",
+        deadline: "18 days left",
+        urgency: "high",
+        desc: "Owners of vehicles with Full Self-Driving or Autopilot features."
+      },
+      {
+        id: 3,
+        title: "Bank Overdraft Fee Class Action",
+        company: "Major US Banks",
+        category: "Finance",
+        payout: "$75 – $320",
+        deadline: "67 days left",
+        urgency: "medium",
+        desc: "Anyone charged excessive overdraft or NSF fees since 2020."
+      },
+      {
+        id: 4,
+        title: "PFAS 'Forever Chemicals' in Water",
+        company: "Multiple Manufacturers",
+        category: "Health",
+        payout: "$150 – $1,500",
+        deadline: "94 days left",
+        urgency: "medium",
+        desc: "Residents in affected counties with high PFAS levels in drinking water."
+      },
+      {
+        id: 5,
+        title: "Apple App Store Subscription Auto-Renew Scam",
+        company: "Apple",
+        category: "Consumer Products",
+        payout: "$30 – $180",
+        deadline: "12 days left",
+        urgency: "high",
+        desc: "Users who were automatically charged for subscriptions they thought were cancelled."
+      },
+      {
+        id: 6,
+        title: "AI Deepfake Voice Fraud Settlement",
+        company: "Several AI Companies",
+        category: "Privacy",
+        payout: "$200 – $750",
+        deadline: "44 days left",
+        urgency: "medium",
+        desc: "Victims of voice cloning or deepfake identity theft using commercial AI tools."
+      }
+    ];
+
+    let myClaims = [];
+    let currentFilter = 'all';
+    let currentModalClaim = null;
+    let currentTab = 0;
+
+    const categories = ['All', 'Privacy', 'Auto', 'Finance', 'Health', 'Consumer Products'];
+
+    function initTailwind() {
+      tailwind.config = {
+        content: [],
+        theme: {
+          extend: {}
+        }
+      };
+    }
+
+    function renderCategoryFilters() {
+      const container = document.getElementById('categoryFilters');
+      container.innerHTML = '';
+      categories.forEach(cat => {
+        const active = cat === 'All' && currentFilter === 'all' ? 'bg-emerald-600 text-white' : 'bg-white hover:bg-gray-100';
+        const el = document.createElement('button');
+        el.className = `px-5 py-2 text-sm rounded-3xl border font-medium ${active}`;
+        el.textContent = cat;
+        el.onclick = () => {
+          currentFilter = cat === 'All' ? 'all' : cat;
+          renderCategoryFilters();
+          renderClaims();
+        };
+        container.appendChild(el);
+      });
+    }
+
+    function renderClaims(filteredClaims = null) {
+      const container = document.getElementById('claimsGrid');
+      container.innerHTML = '';
+      
+      const toRender = filteredClaims || claims;
+      
+      toRender.forEach(claim => {
+        const card = document.createElement('div');
+        card.className = `bg-white border border-gray-200 rounded-3xl overflow-hidden card-hover cursor-pointer`;
+        card.innerHTML = `
+          <div class="p-6">
+            <div class="flex justify-between">
+              <span class="px-4 py-1 text-xs font-bold rounded-3xl ${claim.category === 'Privacy' ? 'bg-purple-100 text-purple-700' : 
+                claim.category === 'Auto' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'}">
+                ${claim.category}
+              </span>
+              <span class="text-xs font-medium text-red-500 ${claim.urgency === 'high' ? 'urgency' : ''}">${claim.deadline}</span>
+            </div>
+            <h3 class="font-bold text-xl mt-4 leading-tight">${claim.title}</h3>
+            <p class="text-emerald-600 font-semibold">${claim.company}</p>
+            <div class="mt-6 flex justify-between items-end">
+              <div>
+                <div class="text-xs text-gray-500">POTENTIAL PAYOUT</div>
+                <div class="text-3xl font-bold text-emerald-700">${claim.payout}</div>
+              </div>
+              <button onclick="event.stopImmediatePropagation(); openModal(${claim.id});" 
+                      class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl text-sm font-semibold">
+                Check Eligibility
+              </button>
+            </div>
+          </div>
+        `;
+        card.onclick = () => openModal(claim.id);
+        container.appendChild(card);
+      });
+    }
+
+    function openModal(id) {
+      currentModalClaim = claims.find(c => c.id === id);
+      if (!currentModalClaim) return;
+
+      document.getElementById('modalTitle').textContent = currentModalClaim.title;
+      document.getElementById('modalCompany').textContent = currentModalClaim.company;
+      document.getElementById('modalPayout').textContent = currentModalClaim.payout;
+      document.getElementById('modalDeadline').textContent = currentModalClaim.deadline;
+      document.getElementById('modalCategory').textContent = currentModalClaim.category;
+      
+      // Simple eligibility questions
+      const questionsHTML = `
+        <div class="space-y-5">
+          <div>
+            <p class="font-medium mb-2">Did you purchase or use a product/service from ${currentModalClaim.company}?</p>
+            <div class="flex gap-4">
+              <label class="flex items-center gap-2"><input type="radio" name="q1" class="accent-emerald-600"> Yes</label>
+              <label class="flex items-center gap-2"><input type="radio" name="q1" class="accent-emerald-600"> No</label>
+            </div>
+          </div>
+          <div>
+            <p class="font-medium mb-2">Were you affected between 2020 and 2025?</p>
+            <div class="flex gap-4">
+              <label class="flex items-center gap-2"><input type="radio" name="q2" class="accent-emerald-600"> Yes</label>
+              <label class="flex items-center gap-2"><input type="radio" name="q2" class="accent-emerald-600"> No</label>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('eligibilityQuestions').innerHTML = questionsHTML;
+      document.getElementById('resultSection').classList.add('hidden');
+      document.getElementById('checkBtn').classList.remove('hidden');
+      document.getElementById('claimModal').classList.remove('hidden');
+    }
+
+    function checkEligibility() {
+      document.getElementById('resultSection').classList.remove('hidden');
+      document.getElementById('checkBtn').classList.add('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('claimModal').classList.add('hidden');
+    }
+
+    function submitClaim() {
+      alert("✅ Claim submitted! (Demo)\n\nIn a real version this would forward you to the official settlement portal.\n\nEstimated payout: " + currentModalClaim.payout);
+      closeModal();
+      
+      // Add to My Claims
+      if (!myClaims.find(c => c.id === currentModalClaim.id)) {
+        myClaims.push(currentModalClaim);
+        localStorage.setItem('myClaims', JSON.stringify(myClaims));
+      }
+    }
+
+    function filterClaims() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      if (!searchTerm) {
+        renderClaims();
+        return;
+      }
+      
+      const filtered = claims.filter(claim => 
+        claim.title.toLowerCase().includes(searchTerm) ||
+        claim.company.toLowerCase().includes(searchTerm) ||
+        claim.desc.toLowerCase().includes(searchTerm)
+      );
+      
+      renderClaims(filtered.length > 0 ? filtered : claims);
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active', 'text-emerald-600'));
+      document.querySelectorAll('.nav-link')[tab].classList.add('active', 'text-emerald-600');
+      
+      if (tab === 1) { // My Claims
+        document.getElementById('tabTitle').textContent = 'My Claims';
+        const container = document.getElementById('claimsGrid');
+        if (myClaims.length === 0) {
+          container.innerHTML = `<div class="col-span-2 text-center py-20 text-gray-400">You haven't filed any claims yet.<br><br>Start by checking your eligibility on the Discover tab.</div>`;
+        } else {
+          renderClaims(myClaims);
+        }
+      } else {
+        document.getElementById('tabTitle').textContent = 'Active Settlements You May Qualify For';
+        renderClaims();
+      }
+    }
+
+    function showAdDemo() {
+      alert("This is how Claimly makes money:\n\n1. Banner / Sidebar advertisements (like the ones you see)\n2. Sponsored settlements (law firms pay to be featured)\n3. Affiliate partnerships with credit monitoring, legal marketing, and insurance companies.\n\nUsers pay nothing — ever.");
+    }
+
+    // Initialize
+    window.onload = function() {
+      initTailwind();
+      renderCategoryFilters();
+      renderClaims();
+      
+      // Load saved claims
+      if (localStorage.getItem('myClaims')) {
+        myClaims = JSON.parse(localStorage.getItem('myClaims'));
+      }
+      
+      console.log('%cClaimly prototype ready. Fully ad-supported demo.', 'color:#10b981; font-size:13px');
+    };
+  </script>
+</body>
+</html>
